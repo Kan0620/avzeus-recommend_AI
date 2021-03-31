@@ -21,7 +21,7 @@ class A2C_zeus():
         
     def recommend(self,ranked_list=[]):
         
-        actress_vec_dir=glob.glob('actress_vecs/*')
+        actress_vec_dir=glob.glob('actress_vecs/*.npy')
         
         rec_vecs=np.zeros(len(actress_vec_dir))
     
