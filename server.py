@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
 
-@app.route('/inputted-data/<string:data>')
+@app.route('/inputted-data/<string:data>', methods=['GET'])
 def inputted_data(data):
     # data: ユーザーが好きな順の女優5人のid配列
     list_data = data.split(',')
@@ -19,13 +19,15 @@ def inputted_data(data):
     # ここまでかんたその処理
 
     recommended_data = {
-        "id": sample_output[0],
-        "state": sample_output[1],
-        "epsiron": sample_output[2],
+        'actresses_ids': sample_output[0],
+        'states': sample_output[1],
+        'epsilons': sample_output[2],
     }
+
+    # クエリをエンコード
+    encoded_query = urllib.parse.urlencode(recommended_data)
     # Backendにリダイレクト
-    redirect_url = 'http://localhost:8000/outputted-data?' + \
-        'data='+str(recommended_data)
+    redirect_url = 'http://localhost:8000/outputted-data?' + encoded_query
     return redirect(redirect_url)
 
 
