@@ -3,6 +3,9 @@
 from flask import Flask, request, jsonify, make_response, redirect
 import requests
 import urllib.parse
+from AVzeus import test_rec
+
+
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
@@ -15,15 +18,16 @@ def inputted_data(data):
     list_data = [int(i) for i in list_data]
 
     # ここからかんたその処理
-    sample_output = [[2, 5, 6, 7, 2], [1, 3, 5, 6, 2], [1, 6, 6]]
+    output = test_rec(list_data)
     # ここまでかんたその処理
 
     recommended_data = {
-        "id": sample_output[0],
-        "state": sample_output[1],
-        "epsiron": sample_output[2],
+        "id": output[0],
+        "state": output[1],
+        "epsiron": output[2],
     }
     # Backendにリダイレクト
+    
     redirect_url = 'http://localhost:8000/outputted-data?' + \
         'data='+str(recommended_data)
     return redirect(redirect_url)
