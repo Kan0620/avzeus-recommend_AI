@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, request, jsonify, make_response, redirect
-import requests
 import urllib.parse
+from AVzeus import test_rec
+
+
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
@@ -14,31 +16,22 @@ def inputted_data(data):
     # list_data: dataをint型の配列に変換したもの
     list_data = [int(i) for i in list_data]
 
-    # ここからかんたその処理
-    sample_output = [[2, 5, 6, 7, 2], [1, 3, 5, 6, 2], [1, 6, 6]]
-    # ここまでかんたその処理
+    # AI の処理
+    outputs = test_rec(list_data)
+    # ここまでAIの処理
 
-    recommended_data = {
-        'actresses_ids': sample_output[0],
-        'states': sample_output[1],
-        'epsilons': sample_output[2],
-    }
+    # outputをクエリに渡すために加工
+    actresses_ids = ','.join(str(i) for i in outputs[0])
+    states = ','.join(str(i) for i in outputs[1])
+    epsilons = ','.join(str(i) for i in outputs[2])
 
     # クエリをエンコード
-    encoded_query = urllib.parse.urlencode(recommended_data)
+    query = 'actresses_ids='+actresses_ids+'&states='+states+'&epsilons='+epsilons
     # Backendにリダイレクト
-    redirect_url = 'http://localhost:8000/outputted-data?' + encoded_query
+    redirect_url = 'http://localhost:8000/outputted-data?' + query
     return redirect(redirect_url)
 
 
-@app.route('/sample')
-def sample():
-    return 'This is sampla page'
-
-
-# export FLASK_APP=server.py
-# flask run
-# で起動
-# localhost:5000/sample でサンプルページ表示
+# export FLASK_APP=server.py + flask run または python3 server.py で起動
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
