@@ -1,7 +1,7 @@
 version: "3"
 services:
   mysql:
-    image: sosuhub/avzeus-mysq_devl:1.0
+    image: souhub/avzeus-mysql_dev:1.0
     ports:
       - "3306:3306"
 
@@ -9,14 +9,11 @@ services:
     image: souhub/avzeus-backend_dev:1.0
     depends_on:
       - mysql
-    volumes:
-      - ./:/go/src/github.com/souhub/avzeus-backend
     ports:
       - "8000:8000"
 
   ai:
     image: souhub/avzeus-ai_dev:1.0
-    tty: true
     ports:
       - "5000:5000"
 
