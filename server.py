@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, request, jsonify, make_response, redirect
-import urllib.parse
 from AVzeus import recommend
 
 
@@ -9,9 +8,9 @@ app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
 
-@app.route('/inputted-data/<string:data>', methods=['GET'])
-def inputted_data(data):
-    # data: ユーザーが好きな順の女優5人のid配列
+@app.route('/recommendation', methods=['GET'])
+def inputted_data():
+    data = request.args.get("selected_wemen_ids")
     list_data = data.split(',')
     # list_data: dataをint型の配列に変換したもの
     list_data = [int(i) for i in list_data]
@@ -20,16 +19,14 @@ def inputted_data(data):
     outputs = recommend(list_data)
     # ここまでAIの処理
 
-    # outputをクエリに渡すために加工
-    actresses_ids = ','.join(str(i) for i in outputs[0])
-    states = ','.join(str(i) for i in outputs[1])
-    epsilons = ','.join(str(i) for i in outputs[2])
-
-    # クエリをエンコード
-    query = 'actresses_ids='+actresses_ids+'&states='+states+'&epsilons='+epsilons
-    # Backendにリダイレクト
-    redirect_url = 'http://localhost:8000/outputted-data?' + query
-    return redirect(redirect_url)
+    # outputs を recommended_actresses に格納
+    recommended_actresses = {
+        "actresses_ids": outputs[0],
+        "states": outputs[1],
+        "epsilons": outputs[2]
+    }
+    # Backend サーバーに JSONを返す
+    return jsonify(recommended_actresses)
 
 
 # export FLASK_APP=server.py + flask run または python3 server.py で起動
