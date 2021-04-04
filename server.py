@@ -2,7 +2,7 @@
 
 from flask import Flask, request, jsonify, make_response, redirect
 import urllib.parse
-from AVzeus import test_rec
+from AVzeus import recommend
 
 
 app = Flask(__name__)
@@ -17,7 +17,7 @@ def inputted_data(data):
     list_data = [int(i) for i in list_data]
 
     # AI の処理
-    outputs = test_rec(list_data)
+    outputs = recommend(list_data)
     # ここまでAIの処理
 
     # outputをクエリに渡すために加工
