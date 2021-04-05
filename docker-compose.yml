@@ -13,7 +13,7 @@ services:
       - "8000:8000"
 
   ai:
-    image: souhub/avzeus-ai_dev:1.0
+    image: souhub/avzeus-ai_dev:1.1
     ports:
       - "5000:5000"
 
