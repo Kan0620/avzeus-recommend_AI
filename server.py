@@ -29,8 +29,10 @@ def recommendation():
         "states": outputs[1],
         "epsilons": outputs[2]
     }
+    response = make_response(jsonify(recommended_actresses))
+    response.headers["Access-Control-Allow-Origin"] = "*"
     # Backend サーバーに JSONを返す
-    return jsonify(recommended_actresses)
+    return response
 
 
 # export FLASK_APP=server.py + flask run または python3 server.py で起動
