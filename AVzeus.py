@@ -82,13 +82,13 @@ class A2C_zeus():
 
         s=s.split('\n')
 
-        s.pop(-1)
-
         actress_dict={}
 
         for one_info in s:
+            
+            if len(one_info)!=0:
 
-            actress_dict[one_info.split(':')[1]]=int(one_info.split(':')[0])
+                actress_dict[one_info.split(':')[1]]=int(one_info.split(':')[0])
 
         rec_index=[]
 
