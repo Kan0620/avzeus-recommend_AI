@@ -82,13 +82,13 @@ class A2C_zeus():
 
         s=s.split('\n')
 
-        s.pop(-1)
-
         actress_dict={}
 
         for one_info in s:
+            
+            if len(one_info)!=0:
 
-            actress_dict[one_info.split(':')[1]]=int(one_info.split(':')[0])
+                actress_dict[one_info.split(':')[1]]=int(one_info.split(':')[0])
 
         rec_index=[]
 
@@ -125,6 +125,10 @@ class A2C_zeus():
         V_s=np.array(V_s)
         epsilon=np.array(epsilon)
         r=np.array(r)
+        
+        if len(s)<3:
+            
+            return 0
 
 
         for i in range(len(s)-self.n_step):
@@ -146,7 +150,7 @@ class A2C_zeus():
 
         self.save()
 
-        return 0
+        return 1
 
     def manual_teach(self):
 
