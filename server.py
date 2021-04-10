@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, request, jsonify, make_response, redirect
-from AVzeus import recommend
+from AVzeus import recommend,learn_zeus
 
 
 app = Flask(__name__)
@@ -45,8 +45,15 @@ def learn():
         l = [d['states'], d['epsilons'], d['id']]
         learning_data.append(t)
     # ここからAIの処理
+    
+    
     try:
+        
+        learn_zeus(learning_data)
+        
         msg = {"msg": "Learning was successed"}
+        
+        
     except:
         msg = {"msg": "Learning was failed"}
     # ここまでAIの処理　

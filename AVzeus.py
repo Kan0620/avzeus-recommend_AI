@@ -293,7 +293,7 @@ def recommend(ranked_list=[]):
 
     return zeus.recommend(ranked_list)
 
-def learn(input_data=[]):
+def learn_zeus(input_data=[]):
 
     zeus=A2C_zeus(model(),'zeus',2,0.4,0.99,'zeus')
 
