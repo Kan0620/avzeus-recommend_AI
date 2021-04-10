@@ -125,6 +125,10 @@ class A2C_zeus():
         V_s=np.array(V_s)
         epsilon=np.array(epsilon)
         r=np.array(r)
+        
+        if len(s)<3:
+            
+            return 0
 
 
         for i in range(len(s)-self.n_step):
@@ -146,7 +150,7 @@ class A2C_zeus():
 
         self.save()
 
-        return 0
+        return 1
 
     def manual_teach(self):
 
