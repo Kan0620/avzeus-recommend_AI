@@ -35,6 +35,28 @@ def recommendation():
     return response
 
 
-# export FLASK_APP=server.py + flask run または python3 server.py で起動
+@app.route('/learning', methods=['POST'])
+def learn():
+    # postされたデータ受け取り
+    data = request.get_json()
+    learning_data = []
+    # 配列に挿入
+    for d in data:
+        l = [d['states'], d['epsilons'], d['id']]
+        learning_data.append(t)
+    # ここからAIの処理
+    try:
+        msg = {"msg": "Learning was successed"}
+    except:
+        msg = {"msg": "Learning was failed"}
+    # ここまでAIの処理　
+
+    # レスポンス返す
+    response = make_response(msg)
+    response.headers["Content-Type"] = "application/json"
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return response
+
+    # export FLASK_APP=server.py + flask run または python3 server.py で起動
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
