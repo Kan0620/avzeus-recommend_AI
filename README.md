@@ -1,5 +1,10 @@
 # AV女優レコメンドサービス　AVzeusのアルゴリズム実装
 
+## 0.各リンク先
+- β版サイトURL https://avzeus-client.mmu6fa6rgrojg.ap-northeast-1.cs.amazonlightsail.com/
+- Backend https://github.com/souhub/avzeus-backend
+- Frontend https://github.com/souhub/avzeus-frontend
+
 ## 1.pytorch-facenetとseleniumを使った画像収集
 AV女優さんの名簿を作りseleniumを使って　[名前　画像]　と検索してでてきた画像を上からpytorch-facenetのMTCNNにかけて160×160の顔部分の画像を切り出します。これを一人の女優さんに対して50枚集めて女優さんごとにディレクトリを作って保存します。この時点では顔ではなかったり他の人の顔の写真が含まれています。
 
