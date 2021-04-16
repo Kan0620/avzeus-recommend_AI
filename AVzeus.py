@@ -4,6 +4,12 @@
 
 import numpy as np
 import glob
+from facenet_pytorch import MTCNN,InceptionResnetV1
+from PIL import Image
+import cv2
+
+
+
 
 class A2C_zeus():
 
@@ -103,6 +109,58 @@ class A2C_zeus():
         epsilons.pop(0)
 
         return [rec_index,state,epsilons]
+    
+    def img_path2ranked_list(self,load_dir,save_dir):
+        
+        img=Image.open(load_dir)
+        
+        mtcnn=MTCNN(image_size=160, margin=10)
+    
+        img=mtcnn(img,save_dir)
+        
+        if img==None:
+            
+            return img
+        
+        else:
+            
+            resnet=InceptionResnetV1(pretrained='vggface2').eval()
+            
+            img = cv2.imread(save_dir)
+        
+            img=img.transpose(2,0,1)
+            
+            img=tensor(img,dtype=float)
+            
+            img=img.reshape(1,3,160,160)
+            
+            vec=resnet(img.float()).detach().numpy()
+            
+            vec=vec/np.linalg.norm(vec)
+            
+            rp_vecs=[]
+            
+            for i in range(9):
+                
+                one_vec=np.load('rp_vecs/'+str(i)+'_rp_vec.npy')
+
+                one_vec=one_vec/np.linalg.norm(one_vec)
+
+                rp_vecs.append(one_vec)
+                
+            rp_vecs=np.array(rp_vecs)
+            
+            rp_vecs=rp_vecs.reshape(9,512)
+            
+                
+            product=np.dot(rp_vecs,vec.T).reshape(9)
+            
+            return np.argsort(product).tolist()[::-1][:5]
+            
+            
+        
+        
+        
 
     def learn(self,input_data=[]):
         s=[]
@@ -298,6 +356,12 @@ def learn_zeus(input_data=[]):
     zeus=A2C_zeus(model(),'zeus',2,0.4,0.99,'zeus')
 
     return zeus.learn(input_data)
+
+def img_path2ranked_list(load_dir,save_dir):
+    
+    zeus=A2C_zeus(model(),'zeus',2,0.4,0.99,'zeus')
+    
+    return zeus.img_path2ranked_list(load_dir,save_dir)
 
 def teach(n=int()):
 
