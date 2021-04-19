@@ -98,7 +98,7 @@ class A2C_zeus():
 
         rec_index=[]
 
-        for index in np.argsort(rec_vecs)[::-1][:30]:
+        for index in np.argsort(rec_vecs)[::-1][:10]:
 
             name=actress_vec_dir[index].split('/')[-1].split('.')[0]
 
@@ -115,8 +115,12 @@ class A2C_zeus():
         img=Image.open(load_dir)
         
         mtcnn=MTCNN(image_size=160, margin=10)
+        
+        mtcnn.eval()
     
-        img=mtcnn(img,save_dir)
+        with torch.no_grad():
+    
+            img=mtcnn(img,save_dir)
         
         if img==None:
             
@@ -134,7 +138,9 @@ class A2C_zeus():
             
             img=img.reshape(1,3,160,160)
             
-            vec=resnet(img.float()).detach().numpy()
+            with torch.no_grad():
+            
+                vec=resnet(img.float()).detach().numpy()
             
             vec=vec/np.linalg.norm(vec)
             
